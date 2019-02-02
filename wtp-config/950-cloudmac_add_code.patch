@@ -1,0 +1,372 @@
+--- a/drivers/bcma/Makefile
++++ /dev/null
+@@ -1,14 +0,0 @@
+-bcma-y					+= main.o scan.o core.o sprom.o
+-bcma-y					+= driver_chipcommon.o driver_chipcommon_pmu.o
+-bcma-$(CPTCFG_BCMA_SFLASH)		+= driver_chipcommon_sflash.o
+-bcma-$(CPTCFG_BCMA_NFLASH)		+= driver_chipcommon_nflash.o
+-bcma-y					+= driver_pci.o
+-bcma-$(CPTCFG_BCMA_DRIVER_PCI_HOSTMODE)	+= driver_pci_host.o
+-bcma-$(CPTCFG_BCMA_DRIVER_MIPS)		+= driver_mips.o
+-bcma-$(CPTCFG_BCMA_DRIVER_GMAC_CMN)	+= driver_gmac_cmn.o
+-bcma-$(CPTCFG_BCMA_DRIVER_GPIO)		+= driver_gpio.o
+-bcma-$(CPTCFG_BCMA_HOST_PCI)		+= host_pci.o
+-bcma-$(CPTCFG_BCMA_HOST_SOC)		+= host_soc.o
+-obj-$(CPTCFG_BCMA)			+= bcma.o
+-
+-ccflags-$(CPTCFG_BCMA_DEBUG)		:= -DDEBUG
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
+@@ -2,60 +2,4 @@
+ # Makefile for the Linux Wireless network device drivers.
+ #
+ 
+-obj-$(CPTCFG_IPW2100) += ipw2x00/
+-obj-$(CPTCFG_IPW2200) += ipw2x00/
+-
+-obj-$(CPTCFG_HERMES)		+= orinoco/
+-#
+-#obj-$(CPTCFG_AIRO)		+= airo.o
+-#obj-$(CPTCFG_AIRO_CS)		+= airo_cs.o airo.o
+-#
+-#obj-$(CPTCFG_ATMEL)             += atmel.o
+-#obj-$(CPTCFG_PCI_ATMEL)         += atmel_pci.o 
+-#obj-$(CPTCFG_PCMCIA_ATMEL)      += atmel_cs.o
+-
+-obj-$(CPTCFG_AT76C50X_USB)      += at76c50x-usb.o
+-#
+-#obj-$(CPTCFG_PRISM54)		+= prism54/
+-#
+-#obj-$(CONFIG_HOSTAP)		+= hostap/
+-obj-$(CPTCFG_B43)		+= b43/
+-obj-$(CPTCFG_B43LEGACY)		+= b43legacy/
+-obj-$(CPTCFG_ZD1211RW)		+= zd1211rw/
+-obj-$(CPTCFG_RTL8180)		+= rtl818x/
+-obj-$(CPTCFG_RTL8187)		+= rtl818x/
+-obj-$(CPTCFG_RTLWIFI)		+= rtlwifi/
+-
+-# 16-bit wireless PCMCIA client drivers
+-#obj-$(CPTCFG_PCMCIA_RAYCS)	+= ray_cs.o
+-#obj-$(CPTCFG_PCMCIA_WL3501)	+= wl3501_cs.o
+-
+-obj-$(CPTCFG_USB_NET_RNDIS_WLAN)	+= rndis_wlan.o
+-#
+-#obj-$(CPTCFG_USB_ZD1201)	+= zd1201.o
+-obj-$(CPTCFG_LIBERTAS)		+= libertas/
+-
+-obj-$(CPTCFG_LIBERTAS_THINFIRM)	+= libertas_tf/
+-
+-obj-$(CPTCFG_ADM8211)	+= adm8211.o
+-
+-obj-$(CPTCFG_MWL8K)	+= mwl8k.o
+-
+-obj-$(CPTCFG_IWLWIFI)	+= iwlwifi/
+-obj-$(CPTCFG_IWLEGACY)	+= iwlegacy/
+-obj-$(CPTCFG_RT2X00)	+= rt2x00/
+-
+-obj-$(CPTCFG_P54_COMMON)	+= p54/
+-
+ obj-$(CPTCFG_ATH_CARDS)		+= ath/
+-
+-obj-$(CPTCFG_MAC80211_HWSIM)	+= mac80211_hwsim.o
+-
+-obj-$(CPTCFG_WL_TI)	+= ti/
+-
+-obj-$(CPTCFG_MWIFIEX)	+= mwifiex/
+-
+-obj-$(CPTCFG_BRCMFMAC)	+= brcm80211/
+-obj-$(CPTCFG_BRCMSMAC)	+= brcm80211/
+-
+-obj-$(CPTCFG_CW1200)	+= cw1200/
+--- a/drivers/net/wireless/ath/Makefile
++++ b/drivers/net/wireless/ath/Makefile
+@@ -1,11 +1,4 @@
+-obj-$(CPTCFG_ATH5K)		+= ath5k/
+ obj-$(CPTCFG_ATH9K_HW)		+= ath9k/
+-obj-$(CPTCFG_CARL9170)		+= carl9170/
+-obj-$(CPTCFG_ATH6KL)		+= ath6kl/
+-obj-$(CPTCFG_AR5523)		+= ar5523/
+-obj-$(CPTCFG_WIL6210)		+= wil6210/
+-obj-$(CPTCFG_ATH10K)		+= ath10k/
+-obj-$(CPTCFG_WCN36XX)		+= wcn36xx/
+ 
+ obj-$(CPTCFG_ATH_COMMON)	+= ath.o
+ 
+@@ -17,4 +10,3 @@ ath-objs :=	main.o \
+ 		dfs_pattern_detector.o \
+ 		dfs_pri_detector.o
+ 
+-ccflags-y += -D__CHECK_ENDIAN__
+--- a/drivers/net/wireless/ath/ath9k/Kconfig
++++ b/drivers/net/wireless/ath/ath9k/Kconfig
+@@ -7,7 +7,8 @@ config ATH9K_COMMON
+ 	select ATH_COMMON
+ config ATH9K_DFS_DEBUGFS
+ 	def_bool y
+-	depends on ATH9K_DEBUGFS && ATH9K_DFS_CERTIFIED
++        depends on ATH9K
++	select MAC80211_DEBUGFS
+ 
+ config ATH9K_BTCOEX_SUPPORT
+ 	bool "Atheros bluetooth coexistence support"
+--- a/drivers/ssb/Makefile
++++ /dev/null
+@@ -1,25 +0,0 @@
+-# core
+-ssb-y					+= main.o scan.o
+-ssb-$(CPTCFG_SSB_EMBEDDED)		+= embedded.o
+-ssb-$(CPTCFG_SSB_SPROM)			+= sprom.o
+-
+-# host support
+-ssb-$(CPTCFG_SSB_PCIHOST)		+= pci.o pcihost_wrapper.o
+-ssb-$(CPTCFG_SSB_PCMCIAHOST)		+= pcmcia.o
+-ssb-$(CPTCFG_SSB_SDIOHOST)		+= sdio.o
+-
+-# built-in drivers
+-ssb-y					+= driver_chipcommon.o
+-ssb-y					+= driver_chipcommon_pmu.o
+-ssb-$(CPTCFG_SSB_SFLASH)		+= driver_chipcommon_sflash.o
+-ssb-$(CPTCFG_SSB_DRIVER_MIPS)		+= driver_mipscore.o
+-ssb-$(CPTCFG_SSB_DRIVER_EXTIF)		+= driver_extif.o
+-ssb-$(CPTCFG_SSB_DRIVER_PCICORE)	+= driver_pcicore.o
+-ssb-$(CPTCFG_SSB_DRIVER_GIGE)		+= driver_gige.o
+-ssb-$(CPTCFG_SSB_DRIVER_GPIO)		+= driver_gpio.o
+-
+-# b43 pci-ssb-bridge driver
+-# Not strictly a part of SSB, but kept here for convenience
+-ssb-$(CPTCFG_SSB_B43_PCI_BRIDGE)	+= b43_pci_bridge.o
+-
+-obj-$(CPTCFG_SSB)			+= ssb.o
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -696,6 +696,7 @@ struct ieee80211_tx_info {
+ 			/* NB: vif can be NULL for injected frames */
+ 			struct ieee80211_vif *vif;
+ 			struct ieee80211_key_conf *hw_key;
++			u8 tx_power; //CLOUDMAC - carry control info to driver
+ 			u32 flags;
+ 			/* 4 bytes free */
+ 		} control;
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1333,6 +1333,7 @@ static void ieee80211_setup_sdata(struct
+ 		break;
+ 	case NL80211_IFTYPE_MONITOR:
+ 		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
++		sdata->dev->type = ARPHRD_ETHER; //CLOUDMAC - allow interface in GRE tunnel
+ 		netdev_attach_ops(sdata->dev, &ieee80211_monitorif_ops);
+ 		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
+ 				      MONITOR_FLAG_OTHER_BSS;
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -30,6 +30,7 @@
+ #include "tkip.h"
+ #include "wme.h"
+ #include "rate.h"
++#include "cloudmac.h"
+ 
+ /*
+  * monitor mode reception
+@@ -412,10 +413,16 @@ ieee80211_rx_monitor(struct ieee80211_lo
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(origskb);
+ 	struct ieee80211_sub_if_data *sdata;
+ 	int needed_headroom;
+-	struct sk_buff *skb, *skb2;
++	struct sk_buff *skb, *skb2,*skb3;
+ 	struct net_device *prev_dev = NULL;
+ 	int present_fcs_len = 0;
+ 
++	struct ethhdr *chdr;
++    	struct ethhdr chdr_tmp;
++    	struct ieee80211_hdr *ihdr = (struct ieee80211_hdr *) origskb->data;
++    	memcpy(&chdr_tmp.h_dest, ihdr->addr1, ETH_ALEN);
++    	memcpy(&chdr_tmp.h_source, ihdr->addr2, ETH_ALEN);
++
+ 	/*
+ 	 * First, we may need to make a copy of the skb because
+ 	 *  (1) we need to modify it for radiotap (if not present), and
+@@ -485,6 +492,24 @@ ieee80211_rx_monitor(struct ieee80211_lo
+ 	skb->pkt_type = PACKET_OTHERHOST;
+ 	skb->protocol = htons(ETH_P_802_2);
+ 
++    	/* CLOUDMAC begin */
++    	if (CLOUDMAC_ADD_HEADER == 1) {
++            	skb3 = skb_copy_expand(skb, sizeof(*chdr), 0, GFP_ATOMIC);
++            	if (skb3 == NULL)
++               		return origskb;
++            	dev_kfree_skb(skb);
++           	skb = skb3;
++            	chdr = (struct ethhdr *) skb_push(skb, sizeof(*chdr));
++            	memcpy(chdr->h_dest, &chdr_tmp.h_dest, ETH_ALEN);
++            	memcpy(chdr->h_source, &chdr_tmp.h_source, ETH_ALEN);
++
++            	chdr->h_proto = CLOUDMAC;
++            	skb_reset_mac_header(skb);
++    	}
++
++
++    	/* CLOUDMAC end */
++
+ 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+ 		if (sdata->vif.type != NL80211_IFTYPE_MONITOR)
+ 			continue;
+@@ -499,7 +524,10 @@ ieee80211_rx_monitor(struct ieee80211_lo
+ 			skb2 = skb_clone(skb, GFP_ATOMIC);
+ 			if (skb2) {
+ 				skb2->dev = prev_dev;
+-				netif_receive_skb(skb2);
++ 			    	skb2->protocol = eth_type_trans (skb2, skb2->dev);
++				skb2->pkt_type = PACKET_HOST;
++				skb2->dev->last_rx = jiffies;
++				netif_rx_ni(skb2);
+ 			}
+ 		}
+ 
+@@ -510,7 +538,10 @@ ieee80211_rx_monitor(struct ieee80211_lo
+ 
+ 	if (prev_dev) {
+ 		skb->dev = prev_dev;
+-		netif_receive_skb(skb);
++        	skb->protocol = eth_type_trans (skb, skb->dev);
++        	skb->pkt_type = PACKET_HOST;
++        	skb->dev->last_rx = jiffies;
++       	 	netif_rx_ni(skb);
+ 	} else
+ 		dev_kfree_skb(skb);
+ 
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -1,6 +1,6 @@
+ #if !defined(__MAC80211_DRIVER_TRACE) || defined(TRACE_HEADER_MULTI_READ)
+ #define __MAC80211_DRIVER_TRACE
+-
++#pragma once
+ #include <linux/tracepoint.h>
+ #include <net/mac80211.h>
+ #include "ieee80211_i.h"
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -34,6 +34,7 @@
+ #include "wpa.h"
+ #include "wme.h"
+ #include "rate.h"
++#include "cloudmac.h"
+ 
+ /* misc utils */
+ 
+@@ -1121,6 +1122,15 @@ ieee80211_tx_prepare(struct ieee80211_su
+ 	int tid;
+ 	u8 *qc;
+ 
++    	/* CLOUDMAC start - remove CLOUDMAC hdr and read/set rate info */
++    	struct cloudmac_hdr *chdr = (struct cloudmac_hdr *)skb->data;
++    	if (skb->data[12] == 0x13 && skb->data[13] == 0x37) { //CLOUDMAC
++          	skb->data[CLOUDMAC_RATE_OFFSET] = chdr->rate;
++          	skb_pull(skb, sizeof(*chdr));
++          	info->control.tx_power = chdr->signal;
++    	}
++    	/* CLOUDMAC end */
++
+ 	memset(tx, 0, sizeof(*tx));
+ 	tx->skb = skb;
+ 	tx->local = local;
+@@ -1541,13 +1551,17 @@ static bool ieee80211_parse_tx_radiotap(
+ 	struct ieee80211_radiotap_header *rthdr =
+ 		(struct ieee80211_radiotap_header *) skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
++	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(skb->dev);
+ 	int ret = ieee80211_radiotap_iterator_init(&iterator, rthdr, skb->len,
+ 						   NULL);
+ 	u16 txflags;
++	struct ieee80211_supported_band *sband;
+ 
+ 	info->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT |
+ 		       IEEE80211_TX_CTL_DONTFRAG;
+ 
++	sband = sdata->local->hw.wiphy->bands[sdata->local->hw.conf.chandef.chan->band];
++
+ 	/*
+ 	 * for every radiotap entry that is present
+ 	 * (ieee80211_radiotap_iterator_next returns -ENOENT when no more
+@@ -1594,6 +1608,40 @@ static bool ieee80211_parse_tx_radiotap(
+ 				info->flags |= IEEE80211_TX_CTL_NO_ACK;
+ 			break;
+ 
++         	case IEEE80211_RADIOTAP_RATE: {
++
++                    	int i, idx = -1;
++                    	int rate = *iterator.this_arg * 5;
++                    	for (i = 0; i < sband->n_bitrates; i++)
++                        	if (sband->bitrates[i].bitrate == rate) {
++                            		idx = i;
++                            	break;
++                        	}
++
++                    	// Rate not available - rejecting
++                    	if (idx < 0)
++                        	return false;
++
++                    	//info->flags |= IEEE80211_TX_CTL_RC_BYPASS;
++                   	info->flags |= BIT(27);
++                    	info->control.rates[0].idx = idx;
++                    	info->control.rates[0].count = 1;
++                    	for (i = 1; i < IEEE80211_TX_MAX_RATES; i++)
++                        	info->control.rates[i].idx = -1;
++                    	break;
++         	}
++
++         	case IEEE80211_RADIOTAP_DATA_RETRIES:
++                        	/*
++                         	* Only allow setting the number of retries in
++                         	* conjunction with the rates, when the rate control
++                         	* is bypassed.
++                         	*/
++                        	if (info->flags & BIT(27))
++                                	info->control.rates[0].count =
++                                        	*iterator.this_arg;
++                        	break;
++
+ 		/*
+ 		 * Please update the file
+ 		 * Documentation/networking/mac80211-injection.txt
+@@ -1621,6 +1669,14 @@ static bool ieee80211_parse_tx_radiotap(
+ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 					 struct net_device *dev)
+ {
++	if (skb->data[12] == 0x13 && skb->data[13] == 0x37) { //CLOUDMAC
++        	struct cloudmac_hdr *chdr = (struct cloudmac_hdr *)skb->data;
++        	struct ieee80211_tx_info *info ;
++        	skb_pull(skb, 14);
++        	info = IEEE80211_SKB_CB(skb);
++        	info->control.tx_power = chdr->signal;
++    	}	
++
+ 	struct ieee80211_local *local = wdev_priv(dev->ieee80211_ptr);
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	struct ieee80211_channel *chan;
+--- a/net/wireless/Makefile
++++ b/net/wireless/Makefile
+@@ -1,13 +1,4 @@
+ obj-$(CPTCFG_CFG80211) += cfg80211.o
+-obj-$(CPTCFG_LIB80211) += lib80211.o
+-obj-$(CPTCFG_LIB80211_CRYPT_WEP) += lib80211_crypt_wep.o
+-obj-$(CPTCFG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
+-obj-$(CPTCFG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
+-
+-obj-$(CONFIG_WEXT_CORE) += wext-core.o
+-obj-$(CONFIG_WEXT_PROC) += wext-proc.o
+-obj-$(CONFIG_WEXT_SPY) += wext-spy.o
+-obj-$(CONFIG_WEXT_PRIV) += wext-priv.o
+ 
+ cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o
+ cfg80211-y += mlme.o ibss.o sme.o chan.o ethtool.o mesh.o ap.o trace.o
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1,6 +1,6 @@
+ #undef TRACE_SYSTEM
+ #define TRACE_SYSTEM cfg80211
+-
++#pragma once
+ #if !defined(__RDEV_OPS_TRACE) || defined(TRACE_HEADER_MULTI_READ)
+ #define __RDEV_OPS_TRACE
+ 
